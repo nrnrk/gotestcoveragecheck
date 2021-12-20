@@ -9,7 +9,7 @@ import (
 
 func main() {
 	r := rand.New(rand.NewSource(time.Now().Unix()))
-	fmt.Println(feeling(r.Int() % 3))
+	fmt.Println(feeling(r.Int() % 5))
 }
 
 func feeling(typ int) string {
@@ -22,6 +22,8 @@ func feeling(typ int) string {
 		return `great`
 	case 3:
 		return `super`
+	case 4:
+		return `awesome`
 	default:
 		panic(errors.New(`not supported type`))
 	}
