@@ -1,0 +1,29 @@
+version: 2.1
+
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/golang:1.17
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: |
+            go test -v -coverprofile=coverage.out ./...
+            go tool cover -func=coverage.out > report.out
+            # 除外したいファイルがある場合
+            # cat coverage.out |grep -v '(mock_*.go|*.pb.go)' > filtered.out
+            # go tool cover -func=filtered.out > report.out
+
+            # coverage rate limit
+            declare -r limit=60
+            if (( $(cat report.out | awk 'END{gsub("%", "", $3); print ($3 < '$limit')}') )); then
+              echo 'Coverage is below the lower limit! Failed!'
+              exit 1;
+            fi
+
+workflows:
+  sample:
+    jobs:
+      - build
