@@ -11,7 +11,7 @@ Go の標準ツールでテストカバレッジを計測し、マージ可能�
 go test -v -coverprofile=coverage.out ./...
 go tool cover -func=coverage.out > report.out
 # 除外したいファイルがある場合
-# cat coverage.out |grep -v '(mock_*.go|*.pb.go)' > filtered.out
+# cat coverage.out |grep -E -v '(mock_*.go|*.pb.go)' > filtered.out
 # go tool cover -func=filtered.out > report.out
 
 # coverage rate limit (ここでは 60% としている)
